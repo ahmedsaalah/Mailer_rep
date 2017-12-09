@@ -23,11 +23,8 @@ mail = Mail(app)
 ''' Views  '''
 @app.route('/')
 def HomePage():
-    
-
-    
-    
-    return render_template('signin.html' )
+    active = "SendMail"
+    return render_template('imo.html' ,message="")
 
 
 
@@ -55,6 +52,9 @@ def addToList(message = ''):
 
 
 ''' end Views  '''
+
+
+
 
 ''' post request  function  '''
 @app.route("/login", methods=['POST','GET'])
@@ -87,19 +87,12 @@ def sendmail():
    
 
     msg = request.form["msgpost"]
-    subject = request.form["subject"]
-    response =  send_email(msg , subject)
-    the_dict = json.loads(response)
-
-    if  the_dict["message"] == "Queued. Thank you.":
-        login_session['message'] = alertFunc('email has been sent successfully')
-        
-        
-    else :
-        login_session['message'] =  alertFunc(the_dict["message"])
-        
+    print(msg)
     
-    return redirect(url_for('routeToMain'))
+        
+
+    return render_template('imo.html' ,message=msg ,msg=msg)
+    # return redirect(url_for('routeToMain'))
 
 
 
@@ -152,7 +145,7 @@ def send_email(mailContent, subject):
 
 ''' end main function '''
 
- ''' other functions'''
+
 def alertFunc(Message):
     return "<script>alert('"+Message+"')</script>"
 
@@ -166,7 +159,7 @@ def haaash(w):
 
 
 def checkToRediect():
-     try:
+    try:
         if  login_session['state'] == "younesidbs@gmail.com" :
             return True
         else :
